@@ -20,49 +20,4 @@ Refactoring & MultiThreading
 
 
 
-***************************************************
-Handlers*
-Важно: это необязательная задача, её выполнение не влияет на получение зачёта.
 
-Легенда
-Сервер, который вы написали в предыдущей задаче, - это, конечно, здорово, но пока он не расширяем и его нельзя переиспользовать, т.к. код обработки зашит прямо внутрь сервера.
-
-Давайте попробуем его сделать немного полезнее.
-
-Что хотим сделать? Мы хотим сделать так, чтобы в сервер можно было добавлять обработчики на определённые шаблоны путей.
-
-Что это значит? Мы хотим, чтобы можно было сделать вот так:
-
-public class Main {
-    public static void main(String[] args){
-      final var server = new Server();  
-      // код инициализации сервера (из вашего предыдущего ДЗ)
-
-      // добавление handler'ов (обработчиков)    
-      server.addHandler("GET", "/messages", new Handler() {
-        public void handle(Request request, BufferedOutputStream responseStream) {
-          // TODO: handlers code
-        }
-      });
-      server.addHandler("POST", "/messages", new Handler() {
-        public void handle(Request request, BufferedOutputStream responseStream) {
-          // TODO: handlers code
-        }
-      });
-
-      server.listen(9999);
-    }    
-}
-В итоге на запрос типа GET на путь "/messages" будет вызван первый обработчик, на запрос типа POST и путь "/messages" будет вызван второй.
-
-Как вы видите - Handler из себя представляет функциональный интерфейс всего с одним методом (может быть заменён на lambda).
-
-Request - это класс, который проектируете вы сами, для нас важно, чтобы он содержал:
-
-Метод запроса (потому что на разные методы можно назначить один и тот же Handler)
-Заголовки запроса
-Тело запроса (если есть)
-BufferedOutputStream берётся просто путём заворачивания OutputStream'а socket'а: new BufferedOutputStream(socket.getOutputStream()).
-
-Задача
-Реализуйте требования, указанные в легенде.
