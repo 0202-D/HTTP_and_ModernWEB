@@ -25,7 +25,9 @@ public class ClientHandler implements Runnable {
             while (true) {
 
                 Request request = createRequest(in, out);
-
+                if(request.getPath().startsWith("/message?")){
+                    request.setPath(FileDao.validPaths.get(0));
+                }
                 Handler handler = Server.getHandlers().get(request.getMethod()).get(request.getPath());
 
                 if (handler == null) {
@@ -53,7 +55,6 @@ public class ClientHandler implements Runnable {
             socket.close();
         }
         final var pathAndQuery = parts[1];
-        System.out.println("Параметры");
         var parsResultParams = Request.getQueryParams(pathAndQuery);
         var path = Request.getQueryParamsPath(pathAndQuery);
         System.out.println(parsResultParams);
@@ -85,7 +86,7 @@ public class ClientHandler implements Runnable {
     }
 
     static void responseOK(Request request, BufferedOutputStream responseStream) throws IOException {
-        if (request.getMethod().equals("POST")) {
+        if (request.getMethod().equals("POST")&&request.getPath().startsWith("/")) {
             responseStream.write((
                     "HTTP/1.1 200 OK\r\n" +
                             "Content-Length: 0\r\n" +

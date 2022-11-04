@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class Request {
     private final String method;
-    private final String path;
+    private  String path;
     private final Map<String, String> headers;
     private final InputStream body;
     public Request(String method, String path, Map<String, String> headers, InputStream body) {
@@ -54,7 +54,9 @@ public class Request {
     public String getPath() {
         return path;
     }
-
+    public void setPath(String path){
+        this.path=path;
+    }
     public String getMethod() {
         return method;
     }

@@ -20,15 +20,6 @@ public class Main {
 
             });
         }
-/*
-        server.addHandler("POST", "/?value=get-value", (request, responseStream) -> {
-            try {
-                ClientHandler.responseOK(request, responseStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        });*/
         server.addHandler("POST", "/", (request, responseStream) -> {
             try {
                 ClientHandler.responseOK(request, responseStream);
