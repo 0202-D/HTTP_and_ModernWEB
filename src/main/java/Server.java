@@ -44,7 +44,7 @@ public class Server {
             handlers.put(requestMethod, new ConcurrentHashMap<>(Map.of(path, handler)));
         }
 
-        System.out.println(handlers);
+      //  System.out.println(handlers);
     }
 
     public static Map<String, Map<String, Handler>> getHandlers() {
