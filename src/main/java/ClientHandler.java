@@ -4,7 +4,6 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,18 +52,12 @@ public class ClientHandler implements Runnable {
         if (parts.length != 3) {
             socket.close();
         }
-
-        //  final var path = parts[1];
         final var pathAndQuery = parts[1];
         System.out.println("Параметры");
         var parsResultParams = Request.getQueryParams(pathAndQuery);
         var path = Request.getQueryParamsPath(pathAndQuery);
         System.out.println(parsResultParams);
         System.out.println(path);
-
-      /* if (!FileDao.validPaths.contains(path)) {
-            error404NotFound(out);
-        }*/
 
         String line;
         Map<String, String> headers = new HashMap<>();
