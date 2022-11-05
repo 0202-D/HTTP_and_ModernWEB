@@ -9,7 +9,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         final var server = new Server();
-        for (String validPath : FileDao.validPaths) {
+
+       for (String validPath : FileDao.validPaths) {
             server.addHandler("GET", validPath, (request, responseStream) -> {
                 try {
                     ClientHandler.responseOK(request, responseStream);
@@ -19,18 +20,17 @@ public class Main {
 
             });
         }
-
-        server.addHandler("POST", "/resources.html", (request, responseStream) -> {
+        server.addHandler("POST", "/", (request, responseStream) -> {
             try {
                 ClientHandler.responseOK(request, responseStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
-
         server.listen(9999);
     }
+
+
 }
 
 

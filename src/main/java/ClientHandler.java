@@ -1,7 +1,5 @@
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +25,9 @@ public class ClientHandler implements Runnable {
             while (true) {
 
                 Request request = createRequest(in, out);
-
+                if(request.getPath().startsWith("/message?")){
+                    request.setPath(FileDao.validPaths.get(0));
+                }
                 Handler handler = Server.getHandlers().get(request.getMethod()).get(request.getPath());
 
                 if (handler == null) {
@@ -54,12 +54,11 @@ public class ClientHandler implements Runnable {
         if (parts.length != 3) {
             socket.close();
         }
-
-        final var path = parts[1];
-
-        if (!FileDao.validPaths.contains(path)) {
-            error404NotFound(out);
-        }
+        final var pathAndQuery = parts[1];
+        var parsResultParams = Request.getQueryParams(pathAndQuery);
+        var path = Request.getQueryParamsPath(pathAndQuery);
+        System.out.println(parsResultParams);
+        System.out.println(path);
 
         String line;
         Map<String, String> headers = new HashMap<>();
@@ -87,6 +86,15 @@ public class ClientHandler implements Runnable {
     }
 
     static void responseOK(Request request, BufferedOutputStream responseStream) throws IOException {
+        if (request.getMethod().equals("POST")&&request.getPath().startsWith("/")) {
+            responseStream.write((
+                    "HTTP/1.1 200 OK\r\n" +
+                            "Content-Length: 0\r\n" +
+                            "Connection: close\r\n" +
+                            "\r\n"
+            ).getBytes());
+            responseStream.flush();
+        }
 
         final var filePath = Path.of(".", "public", request.getPath());
         final var mimeType = Files.probeContentType(filePath);
