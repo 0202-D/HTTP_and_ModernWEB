@@ -43,7 +43,7 @@ public class ClientHandler implements Runnable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -51,9 +51,9 @@ public class ClientHandler implements Runnable {
         final var requestLine = in.readLine();
         final var parts = requestLine.split(" ");
 
-        if (parts.length != 3) {
+      /*  if (parts.length != 3) {
             socket.close();
-        }
+        }*/
         final var pathAndQuery = parts[1];
         var parsResultParams = Request.getQueryParams(pathAndQuery);
         var path = Request.getQueryParamsPath(pathAndQuery);
